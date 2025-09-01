@@ -1,0 +1,21 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+.message{
+    position: fixed;
+    z-index: 1000;
+    top: 5px;
+    left: 50%;
+    width: 20%;
+    transform: translateX(-50%);
+    text-align: center;
+    border-radius: 10px;
+    padding: 5px 0;
+    color: white;
+}
+
+.list{
+    list-style: none;
+}
+.list li{
+    cursor: pointer;
+}
