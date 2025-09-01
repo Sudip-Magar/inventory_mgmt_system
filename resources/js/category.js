@@ -7,31 +7,40 @@ document.addEventListener('alpine:init', () => {
         errors: {},
         message: '',
         createCategory: false,
-        categoryList:true,
+        categoryList: true,
+        updateCategory:false,
+        allCategory: {},
 
-        createCategoryToggle(){
-            this.createCategory = true;
-            this.categoryList = false
+        init(){
+            this.getData();
         },
 
-        categoryListToggle(){
+        createCategoryToggle() {
+            this.createCategory = true;
+            this.categoryList = false;
+            this.updateCategory = false
+        },
+
+        categoryListToggle() {
             this.categoryList = true;
             this.createCategory = false;
+            this.updateCategory = false
         },
 
         getData() {
-            this.$wire.call('   ').then((response) => {
-                console.log(response)
+            this.$wire.call('getData').then((response) => {
+                console.log(response);
+                this.allCategory = response;
             }).catch((error) => {
                 console.log(error)
             })
         },
 
-        timeoutFunc(){
-            if(this.message){
-                setTimeout(()=>{
+        timeoutFunc() {
+            if (this.message) {
+                setTimeout(() => {
                     this.message = '';
-                },2000)
+                }, 2000)
             }
         },
 
@@ -67,6 +76,8 @@ document.addEventListener('alpine:init', () => {
                 else {
                     this.message = response;
                     this.timeoutFunc();
+                    this.categoryListToggle();
+                    this.getData();
                     this.data = {};
 
                 }
@@ -76,5 +87,55 @@ document.addEventListener('alpine:init', () => {
             })
         },
 
+        updateChange(id){
+            this.updateCategory = true;
+            this.createCategory = false;
+            this.categoryList = false
+            console.log(id)
+            const category = this.allCategory.find(cat => cat.id === id);
+            if(category){
+                this.data ={
+                    id:category.id,
+                    name:category.name,
+                    description: category.description || ''
+                };
+                console.log(this.data)
+            }
+        },
+
+        updateData(){
+            if(!this.validate()){
+                return
+            }
+
+            this.$wire.call('updateStore',this.data).then((response)=>{
+                this.errors = {};
+                if(response.original){
+                    Object.entries(response.original).forEach(([key,message])=>{
+                        this.errors[key] = message[0];
+                    })
+                }
+
+                else{
+                    this.categoryListToggle();
+                    this.message = response;
+                    this.timeoutFunc();
+                    this.getData();
+                    this.data = {};
+                }
+            }).catch((error)=>{
+                console.log(error)
+            })
+        },
+        deleteData(id){
+            this.$wire.call('delete',id).then((response)=>{
+                this.message = response;
+                this.timeoutFunc();
+                this.getData();
+                this.categoryListToggle();
+            }).catch((error)=>{
+                console.log(error)
+            })
+        },
     }))
 })

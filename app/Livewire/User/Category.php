@@ -12,6 +12,33 @@ class Category extends Component
     {
         return ModelCategory::all();
     }
+
+    public function delete($id)
+    {
+        try {
+            ModelCategory::findOrFail($id)->delete();
+            return "Category Deleted Successfull";
+
+        } catch (ValidationException $exception) {
+            return response()->json($exception->errors());
+        }
+
+    }
+
+    public function updateStore($data)
+    {
+        try {
+
+            $validation = validator($data, [
+                'name' => 'required|min:3|max:25'
+            ])->validate();
+            $save = ModelCategory::findOrFail($data['id']);
+            $save->update($validation);
+            return "Category Updated Scuccessfully";
+        } catch (ValidationException $exception) {
+            return response()->json($exception->errors());
+        }
+    }
     public function storeData($data)
     {
         try {
@@ -21,8 +48,7 @@ class Category extends Component
 
             ModelCategory::create($validation);
             return 'Category Created Successfully';
-        }
-        catch(ValidationException $exception){
+        } catch (ValidationException $exception) {
             return response()->json($exception->errors());
         }
 

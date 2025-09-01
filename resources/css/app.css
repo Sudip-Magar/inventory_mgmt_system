@@ -3,7 +3,7 @@
 .message{
     position: fixed;
     z-index: 1000;
-    top: 5px;
+    top: 15px;
     left: 50%;
     width: 20%;
     transform: translateX(-50%);
