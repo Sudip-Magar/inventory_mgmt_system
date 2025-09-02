@@ -6,11 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Customer extends Model
 {
+    
     protected $fillable = [
         'name',
         'image',
         'email',
-        'address'
+        'address',
+        'phone',
     ];
 
     public function sales(){

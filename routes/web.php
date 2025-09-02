@@ -3,6 +3,7 @@
 use App\Livewire\Login;
 use App\Livewire\Register;
 use App\Livewire\User\Category;
+use App\Livewire\User\Customer;
 use App\Livewire\User\Home;
 use App\Livewire\User\Product;
 use Illuminate\Support\Facades\Route;
@@ -20,4 +21,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/home', Home::class)->name('home');
     Route::get('/category', Category::class)->name('category');
     Route::get('/product', Product::class)->name('product');
+    Route::get('/customer', Customer::class)->name('customer');
 });
