@@ -26,50 +26,57 @@
             <ul class="sidebar-nav p-0">
                 <li class="sidebar-item">
                     <a href="{{ url('home') }}" class="sidebar-links">
-                        <i class="fa-solid fa-gauge"></i>
+                        <i class="fa-solid fa-chart-line"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
 
                 <li class="sidebar-item">
                     <a href="{{ url('product') }}" class="sidebar-links">
-                        <i class="fa-solid fa-gauge"></i>
+                        <i class="fa-solid fa-cubes"></i>
                         <span>Product</span>
                     </a>
                 </li>
 
                 <li class="sidebar-item">
                     <a href="{{ url('purchase') }}" class="sidebar-links">
-                        <i class="fa-solid fa-gauge"></i>
+                        <i class="fa-solid fa-cart-shopping"></i>
                         <span>Pruchase</span>
                     </a>
                 </li>
 
                 <li class="sidebar-item">
                     <a href="{{ url('sale') }}" class="sidebar-links">
-                        <i class="fa-solid fa-gauge"></i>
+                        <i class="fa-solid fa-dollar-sign"></i>
                         <span>Sales</span>
                     </a>
                 </li>
 
                 <li class="sidebar-item">
                     <a href="{{ url('customer') }}" class="sidebar-links">
-                        <i class="fa-solid fa-gauge"></i>
+                        <i class="fa-solid fa-users"></i>
                         <span>Customer</span>
                     </a>
                 </li>
 
                 <li class="sidebar-item">
                     <a href="{{ url('vendor') }}" class="sidebar-links">
-                        <i class="fa-solid fa-gauge"></i>
+                        <i class="fa-solid fa-industry"></i>
                         <span>Vendor</span>
                     </a>
                 </li>
 
                 <li class="sidebar-item">
                     <a href="{{ url('category') }}" class="sidebar-links">
-                        <i class="fa-solid fa-gauge"></i>
+                        <i class="fa-solid fa-layer-group"></i>
                         <span>Category</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item">
+                    <a href="{{ url('movement') }}" class="sidebar-links">
+                        <i class="fa-solid fa-warehouse"></i>
+                        <span>Stock Movement</span>
                     </a>
                 </li>
 

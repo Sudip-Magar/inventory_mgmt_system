@@ -2,15 +2,20 @@
 
 namespace App\Livewire\User;
 
-use Illuminate\Validation\ValidationException;
+use App\Models\Vendor as ModelVendor;
 use Livewire\Component;
-use App\Models\Customer as ModelCustomer;
 use Livewire\WithFileUploads;
+use Illuminate\Validation\ValidationException;
 
-class Customer extends Component
+class Vendor extends Component
 {
     use WithFileUploads;
     public $image;
+
+    public function getData()
+    {
+        return ModelVendor::latest()->get();
+    }
 
     public function storeData($data)
     {
@@ -20,6 +25,7 @@ class Customer extends Component
                 'name' => 'required|min:3|max:20',
                 'email' => 'required|email',
                 'address' => 'required|min:3|max:50',
+                'company' => 'required|min:3|max:50',
                 'phone' => 'required|numeric|digits:10',
                 'image' => 'nullable|image'
             ])->validate();
@@ -28,24 +34,19 @@ class Customer extends Component
                 $validation['image'] = $validation['image']->store('customer', 'public');
             }
 
-            ModelCustomer::create($validation);
+            ModelVendor::create($validation);
             $this->reset();
-            return "Customer Created Successfully";
+            return "Vendor Created Successfully";
         } catch (ValidationException $exception) {
             return response()->json($exception->errors());
         }
     }
 
-    public function getData()
-    {
-        return ModelCustomer::latest()->get();
-    }
-
-    public function updateCustomerdata($data)
+    public function updateVendordata($data)
     {
 
         try {
-            $customer = ModelCustomer::findOrFail($data['id']);
+            $vendor = ModelVendor::findOrFail($data['id']);
             $data['image'] = $this->image;
             $validation = validator($data, [
                 'name' => 'required|min:3|max:20',
@@ -60,21 +61,22 @@ class Customer extends Component
             } else {
                 unset($validation['image']); // keep existing image
             }
-            $customer->update($validation);
+            $vendor->update($validation);
             $this->reset();
-            return "Customer Updated Successfully";
+            return "Vendor Updated Successfully";
         } catch (ValidationException $exception) {
             return response()->json($exception->errors());
         }
 
     }
 
-    public function DeleteProduct($id){
-        ModelCustomer::findOrFail($id)->delete();
-        return "Customer Deleted Successfull";
+    public function DeleteVendor($id){
+        ModelVendor::findOrFail($id)->delete();
+        return "Vendor Deleted Successfull";
     }
+
     public function render()
     {
-        return view('livewire.user.customer');
+        return view('livewire.user.vendor');
     }
 }

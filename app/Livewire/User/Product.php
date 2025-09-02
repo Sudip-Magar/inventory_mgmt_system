@@ -49,6 +49,7 @@ class Product extends Component
 
             $validation['user_id'] = Auth()->id();
             ModelProduct::create($validation);
+            $this->reset();
             return "Product Created Successfully";
         } catch (ValidationException $exception) {
             return response()->json($exception->errors());
@@ -78,13 +79,15 @@ class Product extends Component
             }
 
             $product->update($validation);
+            $this->reset();
             return "product Updated Successfull";
         } catch (ValidationException $exception) {
             return response()->json($exception->errors());
         }
     }
 
-    public function deleteProduct($id){
+    public function deleteProduct($id)
+    {
         ModelProduct::findOrFail($id)->delete();
         return "product deleted Successfully";
     }
