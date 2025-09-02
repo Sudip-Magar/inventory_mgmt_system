@@ -18,7 +18,8 @@ document.addEventListener('alpine:init', () => {
         createCategoryToggle() {
             this.createCategory = true;
             this.categoryList = false;
-            this.updateCategory = false
+            this.updateCategory = false;
+            this.data = {};
         },
 
         categoryListToggle() {

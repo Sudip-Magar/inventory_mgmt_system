@@ -41,9 +41,11 @@ class Category extends Component
     }
     public function storeData($data)
     {
+        
         try {
             $validation = validator($data, [
-                'name' => 'required|min:3|max:25|unique:categories,name'
+                'name' => 'required|min:3|max:25|unique:categories,name',
+                'description'=>'nullable|max:100'
             ])->validate();
 
             ModelCategory::create($validation);

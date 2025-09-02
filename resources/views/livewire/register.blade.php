@@ -5,11 +5,11 @@
 
              <form wire:submit.prevent='store'>
                  <div class="mb-3 text-center user-image">
-                     <div class="text-center">
+                     <div class="text-center images">
                          @if ($image)
-                             <img class="w-50 d-inline-block" src="{{ $image->temporaryUrl() }}" alt="">
+                             <img class="d-inline-block" src="{{ $image->temporaryUrl() }}" alt="">
                          @else
-                             <img class="w-50  d-inline-block" src="{{ asset('storage/common/images.png') }}" alt="">
+                             <img class="d-inline-block" src="{{ asset('storage/common/images.png') }}" alt="">
                          @endif
                      </div>
                      <label class="d-inline-block bg-primary my-2 rounded py-1 px-3" for="image">Upload Image</label>

@@ -19,3 +19,15 @@
 .list li{
     cursor: pointer;
 }
+
+.images img{
+    width: 150px !important;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+.upload{
+    cursor: pointer;
+}
+
+[x-cloak] { display: none !important; }

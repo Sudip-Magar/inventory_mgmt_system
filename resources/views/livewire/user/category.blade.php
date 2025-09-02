@@ -22,6 +22,7 @@
                         <tr>
                             <th>S.No</th>
                             <th>Name</th>
+                            <th>Description</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -30,6 +31,7 @@
                             <tr :key="category.id">
                                 <td x-text="index+1" style="width: 20%;"></td>
                                 <td x-text="category.name"></td>
+                                <td x-text="category.description"></td>
                                 <th style="width:20%">
                                     <button @click.prevent="updateChange(category.id)" class="btn btn-primary">Edit</button>
                                     <button @click.prevent="deleteData(category.id)" class="btn btn-danger">Delete</button>
