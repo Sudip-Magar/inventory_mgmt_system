@@ -6,6 +6,7 @@ use App\Livewire\User\Category;
 use App\Livewire\User\Customer;
 use App\Livewire\User\Home;
 use App\Livewire\User\Product;
+use App\Livewire\User\Purchase;
 use App\Livewire\User\Vendor;
 use Illuminate\Support\Facades\Route;
 
@@ -24,4 +25,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/product', Product::class)->name('product');
     Route::get('/customer', Customer::class)->name('customer');
     Route::get('/vendor', Vendor::class)->name('vendor');
+    Route::get('/purchase', Purchase::class)->name('purchase');
 });
