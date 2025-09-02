@@ -34,6 +34,7 @@ class Register extends Component
         $validation['password'] = Hash::make($validation['password']);
         User::create($validation);
         session()->flash('success','User is Registered Successfully');
+        $this->reset();
         return $this->redirectRoute('login');
     }
     public function render()

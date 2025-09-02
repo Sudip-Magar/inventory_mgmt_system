@@ -34,6 +34,7 @@ class Category extends Component
             ])->validate();
             $save = ModelCategory::findOrFail($data['id']);
             $save->update($validation);
+            $this->reset();
             return "Category Updated Scuccessfully";
         } catch (ValidationException $exception) {
             return response()->json($exception->errors());
@@ -49,6 +50,7 @@ class Category extends Component
             ])->validate();
 
             ModelCategory::create($validation);
+            $this->reset();
             return 'Category Created Successfully';
         } catch (ValidationException $exception) {
             return response()->json($exception->errors());

@@ -11,7 +11,8 @@ class Vendor extends Model
         'image',
         'email',
         'address',
-        'company'
+        'company',
+        'phone'
     ];
     public function purchases(){
         return $this->hasMany(Purchase::class);
