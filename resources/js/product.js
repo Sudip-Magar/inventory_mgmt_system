@@ -46,6 +46,7 @@ document.addEventListener('alpine:init', () => {
             this.createProduct = true;
             this.updateProduct = false;
             this.productList = false;
+            this.datas ={};
         },
 
         productListToggle() {

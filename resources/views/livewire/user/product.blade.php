@@ -13,7 +13,7 @@
     </nav>
 
     {{-- Create Product --}}
-    <div class="card" x-show="createProduct">
+    <div class="card" x-show="createProduct"  x-cloak>
         <div class="card-header">Create Product</div>
         <div class="card-body">
             <form @submit.prevent="store">
@@ -116,7 +116,7 @@
     </div>
 
     {{-- Product List --}}
-    <div class="card" x-show="productList" x-cloak>
+    <div class="card" x-show="productList">
         <div class="card-header">
             Product List
         </div>
@@ -154,8 +154,8 @@
     </div>
 
     {{-- Update Product --}}
-    <div class="card" x-show="updateProduct">
-        <div class="card-header">Product List</div>
+    <div class="card" x-show="updateProduct"  x-cloak>
+        <div class="card-header">Update Product</div>
         <div class="card-body">
             <form @submit.prevent="updateProductDetail">
                 <div class="d-flex justify-content-between align-items-center">
