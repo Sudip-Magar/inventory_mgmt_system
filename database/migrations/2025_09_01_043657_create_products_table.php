@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('price');
             $table->string('stock');
             $table->string('cost');
+            $table->string('description');
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('category_id')->constrained('categories');
             $table->timestamps();
