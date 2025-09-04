@@ -10,7 +10,8 @@ class PurchaseItems extends Model
         'purchase_id',
         'product_id',
         'quantity',
-        'cost_price'
+        'cost_price',
+        'subTotal'
     ];
 
     public function purchase(){

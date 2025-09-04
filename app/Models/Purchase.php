@@ -10,9 +10,13 @@ class Purchase extends Model
     protected $fillable = [
         'vendor_id',
         'total_amount',
-        'quantity',
+        'total_quantity',
         'order_date',
-        'status'
+        'expected_date',
+        'status',
+        'payment_status',
+        'payment_method',
+        'notes'
     ];
 
     public function vendors(){
