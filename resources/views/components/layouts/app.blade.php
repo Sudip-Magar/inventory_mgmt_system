@@ -80,6 +80,14 @@
                     </a>
                 </li>
 
+
+                <li class="sidebar-item">
+                    <a href="{{ url('discount') }}" class="sidebar-links">
+                        <i class="fa-solid fa-percent"></i>
+                        <span>Discount</span>
+                    </a>
+                </li>
+
                 <li class="sidebar-item">
                     <a href="{{ url('profile') }}" class="sidebar-links">
                         <i class="fa-solid fa-gear"></i>

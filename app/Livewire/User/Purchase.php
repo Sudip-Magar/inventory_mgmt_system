@@ -2,6 +2,7 @@
 
 namespace App\Livewire\User;
 
+use App\Models\Discount;
 use App\Models\Product;
 use App\Models\Vendor;
 use App\Models\Purchase as ModelPurchase;
@@ -14,10 +15,12 @@ class Purchase extends Component
         $vendor = Vendor::latest()->get();
         $purchase = ModelPurchase::latest()->get();
         $product = Product::latest()->get();
+        $discount = Discount::latest()->get();
         return [
             $vendor,
             $purchase,
-            $product
+            $product,
+            $discount,
         ];
     }
     public function render()

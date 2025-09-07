@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Discount;
 use App\Livewire\Login;
 use App\Livewire\Register;
 use App\Livewire\User\Category;
@@ -26,4 +27,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/customer', Customer::class)->name('customer');
     Route::get('/vendor', Vendor::class)->name('vendor');
     Route::get('/purchase', Purchase::class)->name('purchase');
+    Route::get('/discount', Discount::class)->name('discount');
 });

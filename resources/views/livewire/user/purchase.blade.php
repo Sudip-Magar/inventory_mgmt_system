@@ -23,7 +23,7 @@
                             <select id="vendor" x-model="data.vendor_id" class="form-control">
                                 <option value="" disabled>Select Vendor</option>
                                 <template x-for="vendor in allVendor" :key="vendor.id">
-                                    <option :value="vendor.id" x-text="vendor.name"></option>
+                                    <option :value="vendor.id"><span x-text="vendor.name"></span></option>
                                 </template>
                             </select>
                         </div>
@@ -93,6 +93,8 @@
                                 <th>Quantity</th>
                                 <th>Price</th>
                                 <th>Total</th>
+                                <th>term</th>
+                                <th>Net Amount</th>
                             </tr>
                         </thead>
                         <tbody>
