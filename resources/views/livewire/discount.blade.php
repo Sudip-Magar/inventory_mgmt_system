@@ -90,7 +90,7 @@
                     @foreach ($discounts as $discount)
                         <tr>
                             <td>{{ $discount->code }}</td>
-                            <td>{{ $discount->code }}</td>
+                            <td>{{ $discount->name }}</td>
                             <td>{{ $discount->sign }}</td>
                             <td>{{ $discount->rate }}</td>
                             <td>

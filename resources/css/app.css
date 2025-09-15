@@ -1,6 +1,6 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
 
-.message{
+.message {
     position: fixed;
     z-index: 1000;
     top: 15px;
@@ -13,21 +13,48 @@
     color: white;
 }
 
-.list{
+.list {
     list-style: none;
 }
-.list li{
+
+.list li {
     cursor: pointer;
 }
 
-.images img{
+.images img {
     width: 150px !important;
     height: 150px;
     object-fit: cover;
     border-radius: 10px;
 }
-.upload{
+
+.upload {
     cursor: pointer;
 }
 
-[x-cloak] { display: none !important; }
+[x-cloak] {
+    display: none !important;
+}
+
+.select2Css {
+    width: 100% !important;
+}
+
+.select2Css option {
+    padding: 5px !important;
+
+}
+
+
+.custom-Model{
+    position: fixed !important;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* inset: 10px; */
+    z-index: 1000;
+    background-color: rgb(87, 87, 87);
+    width: 30%;
+    padding: 20px;
+    color: white;
+}
