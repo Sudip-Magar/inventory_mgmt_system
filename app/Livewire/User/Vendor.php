@@ -31,7 +31,7 @@ class Vendor extends Component
             ])->validate();
 
             if ($validation['image']) {
-                $validation['image'] = $validation['image']->store('customer', 'public');
+                $validation['image'] = $validation['image']->store('vendor', 'public');
             }
 
             ModelVendor::create($validation);
@@ -57,7 +57,7 @@ class Vendor extends Component
             ])->validate();
 
             if ($validation['image']) {
-                $validation['image'] = $validation['image']->store('customer', 'public');
+                $validation['image'] = $validation['image']->store('vendor', 'public');
             } else {
                 unset($validation['image']); // keep existing image
             }

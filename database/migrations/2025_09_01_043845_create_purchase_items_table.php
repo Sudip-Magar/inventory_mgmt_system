@@ -16,6 +16,8 @@ return new class extends Migration {
             $table->foreignId('product_id')->constrained('products');
             $table->string('quantity');
             $table->string('cost_price');
+            $table->string('subTotal')->comment('quantity*cost_price');
+            $table->string('disount_amt');
             $table->timestamps();
         });
     }

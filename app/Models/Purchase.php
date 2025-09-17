@@ -10,16 +10,30 @@ class Purchase extends Model
     protected $fillable = [
         'vendor_id',
         'total_amount',
-        'quantity',
+        'total_quantity',
         'order_date',
-        'status'
+        'expected_date',
+        'status',
+        'payment_status',
+        'payment_method',
+        'notes',
+        'total_discount_amt',
     ];
 
-    public function vendors(){
+    // public function vendors(){
+    //     return $this->belongsTo(Vendor::class);
+    // }
+
+    // public function purchaseItem(){
+    //     return $this->hasMany(PurchaseItems::class);
+    // }
+    public function vendor()
+    {
         return $this->belongsTo(Vendor::class);
     }
 
-    public function purchaseItem(){
+    public function purchaseItems()
+    {
         return $this->hasMany(PurchaseItems::class);
     }
 }

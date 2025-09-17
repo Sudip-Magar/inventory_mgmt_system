@@ -12,6 +12,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
 
     @vite(['resources/css/app.css', 'resources/css/side.css', 'resources/js/app.js'])
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </head>
 
 <body>
@@ -77,6 +81,14 @@
                     <a href="{{ url('movement') }}" class="sidebar-links">
                         <i class="fa-solid fa-warehouse"></i>
                         <span>Stock Movement</span>
+                    </a>
+                </li>
+
+
+                <li class="sidebar-item">
+                    <a href="{{ url('discount') }}" class="sidebar-links">
+                        <i class="fa-solid fa-percent"></i>
+                        <span>Discount</span>
                     </a>
                 </li>
 
