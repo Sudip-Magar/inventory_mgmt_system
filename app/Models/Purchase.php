@@ -16,7 +16,8 @@ class Purchase extends Model
         'status',
         'payment_status',
         'payment_method',
-        'notes'
+        'notes',
+        'total_discount_amt',
     ];
 
     // public function vendors(){

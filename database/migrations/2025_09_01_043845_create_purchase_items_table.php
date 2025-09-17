@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->string('quantity');
             $table->string('cost_price');
             $table->string('subTotal')->comment('quantity*cost_price');
+            $table->string('disount_amt');
             $table->timestamps();
         });
     }

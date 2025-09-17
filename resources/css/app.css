@@ -58,3 +58,7 @@
     padding: 20px;
     color: white;
 }
+
+.pointer{
+    cursor: pointer;
+}

@@ -17,7 +17,8 @@ return new class extends Migration {
             $table->string('total_quantity');
             $table->date('order_date');
             $table->date('expected_date');
-            $table->string('status')->default('pending')->comment('pending,received,cancel');
+            $table->string('total_discount_amt');
+            $table->string('status')->default('draft')->comment('draft,received,cancel');
             $table->string('payment_status')->default('unpaid')->comment('unpaid,partial,paid');
             $table->string('payment_method')->default('cash')->comment('cash,bank');
             $table->string('notes');
