@@ -16,6 +16,13 @@ return new class extends Migration {
             $table->string('total_amount');
             $table->string('quantity');
             $table->date('sales_date');
+            $table->date('expected_date');
+            $table->string('status')->default('draft')->comment('draft,received,cancel');
+            $table->string('payment_status')->default('unpaid')->comment('unpaid,partial,paid');
+            $table->string('payment_method')->default('cash')->comment('cash,bank');
+            $table->string('notes');
+            $table->string('total_received_amount')->nullable();
+            $table->string('total_due_amount')->nullable();
             $table->timestamps();
         });
     }

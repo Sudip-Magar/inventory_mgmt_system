@@ -18,6 +18,8 @@ class Purchase extends Model
         'payment_method',
         'notes',
         'total_discount_amt',
+        'total_paid_amount',
+        'total_due_amount',
     ];
 
     // public function vendors(){
@@ -35,5 +37,10 @@ class Purchase extends Model
     public function purchaseItems()
     {
         return $this->hasMany(PurchaseItems::class);
+    }
+
+    public function purchaseReturns()
+    {
+        return $this->hasMany(PurhchaseReturn::class);
     }
 }
