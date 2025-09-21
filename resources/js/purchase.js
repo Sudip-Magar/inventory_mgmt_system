@@ -1,6 +1,7 @@
 document.addEventListener('alpine:init', () => {
     Alpine.data('purchase', () => ({
         message: '',
+        error: '',
         allVendor: [],
         allPurchase: [],
         allProduct: [],
@@ -13,8 +14,10 @@ document.addEventListener('alpine:init', () => {
             order_date: '',
             expected_date: '',
             payment_method: '',
-            notes: ''
+            notes: '',
+            pay: '',
         },
+        return_reason:'',
         vendorInfo: null,
         purchaseInfo: {},
 
@@ -69,7 +72,6 @@ document.addEventListener('alpine:init', () => {
             this.data.expected_date = this.purchaseInfo.expected_date;
             this.data.payment_method = this.purchaseInfo.payment_method;
             this.data.notes = this.purchaseInfo.notes || '';
-            console.log(this.purchaseInfo)
 
             this.items = this.purchaseInfo.purchase_items.map(i => ({
                 id: i.id || '',
@@ -225,7 +227,6 @@ document.addEventListener('alpine:init', () => {
                 this.allProduct = response[2];
                 this.allDiscount = response[3];
             });
-            console.log(this.allVendor)
         },
 
         // ------------------- Purchase -------------------
@@ -260,19 +261,31 @@ document.addEventListener('alpine:init', () => {
         },
 
         cancelOrder(id) {
-            alert('Order Confirmed');
             this.$wire.call('cancelOrder', id).then(() => {
-                this.message = 'Order Cancelled Successfully!';
+                this.message = 'Purchase Cancelled successfully!';
+                this.resetData();
                 this.getData();
+                this.purchaseListToggle();
                 this.timeoutFunc();
-            });
+            })
+                .catch(() => this.message = 'Error saving purchase!');
         },
 
         confirmOrder(id) {
-            alert('Order Confirmed');
-            this.$wire.call('confirmOrder', id).then(() => {
-                this.message = 'Order Confirmed Successfully!';
-                this.getData();
+            this.$wire.call('confirmOrder', id).then((response) => {
+                if (response) {
+                    this.message = 'Order Confirmed Successfully!';
+                    this.timeoutFunc();
+                    this.purchaseListToggle();
+                    this.getData();
+                }
+                else {
+                    this.error = 'payment is more than total amount!!';
+                    this.timeoutFunc();
+
+                }
+            }).catch((error) => {
+                this.error = 'Error confirming order!';
                 this.timeoutFunc();
             });
         },
@@ -281,10 +294,14 @@ document.addEventListener('alpine:init', () => {
             if (this.message) {
                 setTimeout(() => this.message = '', 2000);
             }
+            if (this.error) {
+                setTimeout(() => this.error = '', 2000)
+            }
         },
 
+
         updatePurchaseData(id) {
-             let payload = {
+            let payload = {
                 vendor_id: this.data.vendor_id,
                 order_date: this.data.order_date,
                 expected_date: this.data.expected_date,
@@ -301,10 +318,26 @@ document.addEventListener('alpine:init', () => {
                 netAmount: this.items.map(i => i.netAmount),        // If you want to send net amounts
             };
 
-            this.$wire.call('updatePurchase',id, payload).then((response)=>{
+            this.$wire.call('updatePurchase', id, payload).then((response) => {
+                this.resetData();
+                this.message = "Purchase Update Successfully"
+                this.purchaseListToggle();
+                this.timeoutFunc();
+                this.getData();
+            }).catch((error) => {
 
-            }).catch((error)=>{
+            });
+        },
 
+        resetToDraft(id) {
+            this.$wire.call('resetToDraft', id).then((response) => {
+                this.message = 'Purchase reset to draft successfully!';
+                this.timeoutFunc();
+                this.purchaseListToggle();
+                this.getData();
+            }).catch((error) => {
+                this.message = 'Error resetting purchase to draft!';
+                this.timeoutFunc();
             });
         },
 
@@ -328,6 +361,27 @@ document.addEventListener('alpine:init', () => {
         get totalTermAmount() {
             return this.items.reduce((sum, i) => sum + Math.abs(Number(i.termAmount) || 0), 0);
 
+        },
+
+        purchaseReturn(id){
+            console.log(id)
+            let payload={
+                purchase_id: id,
+                reason: this.return_reason,
+                total_net_amount: this.totalNetAmount,
+                total_qty: this.totalQuantity,
+                total_term_amt: this.totalTermAmount,
+                product_id : this.items.map(p=> p.product_id),
+                quantity:this.items.map(p=>p.quantity),
+                rate:this.items.map(p=>p.rate),
+                netAmount: this.items.map(p=>p.netAmount),
+                termAmount: this.items.map(p=>p.termAmount),
+            }
+            console.log(payload)
+            this.$wire.createPurchaseReturn(payload).then((response)=>{
+            }).then((error)=>{
+                console.log(error)
+            })
         },
 
     }));

@@ -49,6 +49,14 @@
                     </a>
                 </li>
 
+                
+                <li class="sidebar-item">
+                    <a href="{{ url('purchase-return') }}" class="sidebar-links">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <span>Pruchase Return</span>
+                    </a>
+                </li>
+
                 <li class="sidebar-item">
                     <a href="{{ url('sale') }}" class="sidebar-links">
                         <i class="fa-solid fa-dollar-sign"></i>

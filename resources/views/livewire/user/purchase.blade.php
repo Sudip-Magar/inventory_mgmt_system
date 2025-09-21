@@ -3,6 +3,10 @@
         <div class="message bg-success" x-text="message"></div>
     </template>
 
+    <template x-if="error">
+        <div class="message bg-danger" x-text="error"></div>
+    </template>
+
     <nav>
         <ul class="d-flex list gap-3 bg-success py-1 px-3 rounded">
             <li @click.prevent="purchaseListToggle" :class="purchaseList ? 'text-warning' : 'text-white'">Purchase List
@@ -184,10 +188,12 @@
                             <th>Total Quantity</th>
                             <th>Total Discount</th>
                             <th>Total Amount</th>
+                            <th>Amount Paid</th>
+                            <th>Due Amount</th>
                             <th>Status</th>
-                            <th>Payment</th>
                             <th>Order Date</th>
                             <th>Arrival Date</th>
+                            {{-- <th>Payment</th> --}}
                         </tr>
                     </tbody>
                     <tbody>
@@ -199,26 +205,36 @@
                                 <td x-text="purchase.total_quantity"></td>
                                 <td x-text="purchase.total_discount_amt"></td>
                                 <td x-text="purchase.total_amount"></td>
-                                <template x-if="purchase.status == 'draft'">
-                                    <td class="d-flex justify-content-center "> <span x-text="purchase.status"
+                                <td x-text="purchase.total_paid_amount"></td>
+                                <td x-text="purchase.total_due_amount"></td>
+                                <td class="d-flex justify-content-center ">
+                                    <template x-if="purchase.status == 'draft'">
+                                        <span x-text="purchase.status"
                                             class="bg-danger px-3 py-1 rounded-pill text-white"></span>
-                                    </td>
-                                </template>
+                                    </template>
 
-                                <template x-if="purchase.status == 'confirmed'">
-                                    <td class="d-flex justify-content-center "> <span x-text="purchase.status"
+                                    <template x-if="purchase.status == 'confirmed'">
+                                        <span x-text="purchase.status"
                                             class="bg-success px-3 py-1 text-white rounded-pill"></span>
-                                    </td>
-                                </template>
+                                    </template>
 
-                                <template x-if="purchase.status == 'cancelled'">
-                                    <td class="d-flex justify-content-center "> <span x-text="purchase.status"
+                                    <template x-if="purchase.status == 'cancelled'">
+                                        <span x-text="purchase.status"
                                             class="bg-warning px-3 py-1 rounded-pill"></span>
-                                    </td>
-                                </template>
-                                <td x-text="purchase.payment_status"></td>
+                                    </template>
+                                </td>
                                 <td x-text="purchase.order_date"></td>
                                 <td x-text="purchase.expected_date"></td>
+                                {{-- <td class="d-flex justify-content-center ">
+                                    <template x-if="purchase.payment_status == 'unpaid'">
+                                        <span class="bg-danger px-3 py-1 rounded-pill text-white"
+                                            x-text="purchase.payment_status"></span>
+                                    </template>
+                                    <template x-if="purchase.payment_status == 'paid'">
+                                        <span class="bg-success px-3 py-1 rounded-pill text-white"
+                                            x-text="purchase.payment_status"></span>
+                                    </template>
+                                </td> --}}
                             </tr>
                         </template>
                     </tbody>
@@ -233,18 +249,26 @@
                 <strong>Update Purchase</strong>
                 <div class="flex gap-0 mx-0 d-inline-flex">
                     <span
-                        :class="['p-2 text-white rounded-start', purchaseInfo.status == 'draft' ? 'bg-primary active' : 'bg-secondary']">Draft</span>
+                        :class="['p-2 text-white rounded-start', purchaseInfo.status == 'draft' ? 'bg-primary active' :
+                            'bg-secondary'
+                        ]">Draft</span>
                     <span class="border"></span>
                     <span
                         :class="['p-2 text-white', purchaseInfo.status == 'confirmed' ? 'bg-primary' : 'bg-secondary']">Confirm</span>
                     <span class="border"></span>
 
                     <span
-                        :class="['p-2 text-white rounded-end', purchaseInfo.status == 'cancelled' ? 'bg-primary' : 'bg-secondary']">Cancel</span>
+                        :class="['p-2 text-white', purchaseInfo.status == 'return' ? 'bg-primary' : 'bg-secondary']">Return</span>
+                    <span class="border"></span>
+
+                    <span
+                        :class="['p-2 text-white rounded-end', purchaseInfo.status == 'cancelled' ? 'bg-primary' :
+                            'bg-secondary'
+                        ]">Cancel</span>
                 </div>
             </div>
             <div class="card-body">
-                <form @submit="updatePurchaseData(purchaseInfo.id)">
+                <form>
                     <div class="row mb-3">
                         <!-- Vendor Info -->
                         <div class="col-6">
@@ -280,6 +304,8 @@
                                         <input type="text" class="form-control" :value="vendorInfo.phone"
                                             disabled>
                                     </div>
+
+
                                 </div>
                             </template>
                         </div>
@@ -296,7 +322,8 @@
                             </div>
                             <div class="mb-2">
                                 <label>Total Amount</label>
-                                <input type="text" class="form-control" :value="totalAmount.toFixed(2)" disabled>
+                                <input type="text" class="form-control" :value="totalNetAmount.toFixed(2)"
+                                    disabled>
                             </div>
                             <div class="mb-2">
                                 <label>Total Quantity</label>
@@ -310,6 +337,7 @@
                                     <option value="bank">Bank</option>
                                 </select>
                             </div>
+
                         </div>
                     </div>
 
@@ -342,7 +370,7 @@
                                     </td>
                                     <td>
                                         <input type="number" class="form-control" x-model.number="item.quantity"
-                                            min="1">
+                                            min="0">
                                     </td>
                                     <td>
                                         <input type="number" class="form-control" x-model.number="item.rate"
@@ -384,21 +412,32 @@
                     </table>
 
                     <div class="mb-3 d-flex gap-2">
-                        <button class="btn btn-warning">Update Purchase</button>
                         <template x-if="purchaseInfo.status == 'draft'">
                             <div>
+                                <button @click.prevent="updatePurchaseData(purchaseInfo.id)"
+                                    class="btn btn-warning">Update Purchase</button>
                                 <button @click.prevent="confirmOrder(purchaseInfo.id)" class="btn btn-success">Confirm
                                     Order</button>
+                                <button class="btn btn-danger" @click.prevent="cancelOrder(purchaseInfo.id)">Cancel
+                                    Purchase</button>
                             </div>
                         </template>
 
                         <template x-if="purchaseInfo.status == 'confirmed'">
-                            <button @click.prevent="cancelOrder(purchaseInfo.id)" class="btn btn-danger">Purchase
-                                Return</button>
+                            <div>
+                                <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal">
+                                    Purchase Return
+                                </button>
+
+                                <button class="btn btn-danger text-white"
+                                    @click.prevent="cancelOrder(purchaseInfo.id)">Cancel Purchase</button>
+                            </div>
                         </template>
 
                         <template x-if="purchaseInfo.status == 'cancelled'">
-                            <div> order is cancelled</div>
+                            <button @click.prevent="resetToDraft(purchaseInfo.id)" class="btn btn-warning">Reset to
+                                Draft</button>
                         </template>
                     </div>
                 </form>
@@ -442,6 +481,28 @@
         <div class="flex justify-end gap-2">
             <button class="btn btn-secondary" @click.prevent="closeTermModal">Cancel</button>
             <button class="btn btn-primary" @click.prevent="saveTermAmount">Save</button>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger" id="exampleModalLabel">Do you really wnat to create Purchase Return!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <strong class="mb-1 d-inline-block">Please reason to return the product:</strong>
+                    <textarea min="2" class="form-control" name="" id="" x-model="return_reason"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" @click.prevent="purchaseReturn(purchaseInfo.id)"
+                        class="btn btn-primary">Create Pruchase Return</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
