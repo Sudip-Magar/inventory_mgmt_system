@@ -180,7 +180,7 @@ class Purchase extends Component
             if ($purchaseItems->isEmpty()) {
                 return false;
             }
-
+ 
             $quantityByProduct = $purchaseItems
                 ->groupBy('product_id')
                 ->map(function ($items) {
