@@ -6,6 +6,7 @@
 // import 'select2/dist/css/select2.min.css';
 
 import './bootstrap';
+import './purchaseReturn'
 import './category';
 import './product'
 import './customer'
