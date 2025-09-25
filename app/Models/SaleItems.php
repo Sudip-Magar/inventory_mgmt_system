@@ -10,13 +10,17 @@ class SaleItems extends Model
         'sale_id',
         'product_id',
         'quantity',
+        'subTotal',
+        'dicount_amt',
         'selling_price'
     ];
 
-    public function sale(){
+    public function sale()
+    {
         return $this->belongsTo(Sale::class);
     }
-    public function product(){
-         return $this->belongsTo(Product::class);
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
     }
 }

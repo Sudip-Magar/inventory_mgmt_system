@@ -159,7 +159,7 @@ document.addEventListener('alpine:init', () => {
                 let selectedId = $(el).val();
                 this.items[index].product_id = selectedId;
                 let product = this.allProduct.find(p => String(p.id) === String(selectedId));
-                this.items[index].rate = product?.price || 0;
+                this.items[index].rate = product?.cost_price || 0;
             });
         },
 

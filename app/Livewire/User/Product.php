@@ -3,7 +3,7 @@
 namespace App\Livewire\User;
 
 use App\Models\Category;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -34,9 +34,9 @@ class Product extends Component
                 'code' => 'required|min:2|max:10',
                 'name' => 'required|min:3|max:20',
                 'image' => 'nullable|image',
-                'price' => 'required|numeric',
+                'selling_price' => 'required|numeric',   // FIX
                 'description' => 'required|min:3|max:50',
-                'cost' => 'required|numeric',
+                'cost_price' => 'required|numeric',      // FIX
                 'category_id' => 'required|exists:categories,id',
                 'stock' => 'required|numeric',
             ])->validate();
@@ -47,7 +47,7 @@ class Product extends Component
                 $validation['image'] = null;
             }
 
-            $validation['user_id'] = Auth()->id();
+            $validation['user_id'] = Auth::user()->id;
             ModelProduct::create($validation);
             $this->reset();
             return "Product Created Successfully";
@@ -67,9 +67,9 @@ class Product extends Component
                 'code' => 'required|min:2|max:10',
                 'name' => 'required|min:3|max:20',
                 'image' => 'nullable|image',
-                'price' => 'required|numeric',
+                'selling_price' => 'required|numeric',
                 'description' => 'required|min:3|max:50',
-                'cost' => 'required|numeric',
+                'cost_price' => 'required|numeric',
                 'category_id' => 'required|exists:categories,id',
                 'stock' => 'required|numeric',
             ])->validate();

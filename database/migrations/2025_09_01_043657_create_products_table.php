@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('code');
             $table->string('name');
             $table->string('image')->nullable();
-            $table->string('price');
+            $table->string('selling_price');
             $table->string('stock');
-            $table->string('cost');
+            $table->string('cost_price');
             $table->string('description');
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('category_id')->constrained('categories');

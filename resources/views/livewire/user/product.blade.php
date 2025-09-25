@@ -70,8 +70,8 @@
 
                     <div class="col-6">
                         <div class="mb-2">
-                            <label for="cost" class="form-label"> Product Cost:</label>
-                            <input type="number" class="form-control" id="cost" x-model="datas.cost"
+                            <label for="cost" class="form-label"> Product Cost Price:</label>
+                            <input type="number" class="form-control" id="cost" x-model="datas.cost_price"
                                 placeholder="Enter Product Cost">
                             <template x-if="errors.cost">
                                 <span class="text-danger" x-text="errors.cost"></span>
@@ -79,8 +79,8 @@
                         </div>
 
                         <div class="mb-2">
-                            <label for="price" class="form-label"> Product price:</label>
-                            <input type="number" class="form-control" id="price" x-model="datas.price"
+                            <label for="price" class="form-label"> Product Selling price:</label>
+                            <input type="number" class="form-control" id="price" x-model="datas.selling_price"
                                 placeholder="Enter Product price">
                             <template x-if="errors.price">
                                 <span class="text-danger" x-text="errors.price"></span>
@@ -126,8 +126,8 @@
                     <th>Code</th>
                     <th>Name</th>
                     <th>Category</th>
-                    <th>Price</th>
-                    <th>Cost</th>
+                    <th>Selling Price</th>
+                    <th>Cost Price</th>
                     <th>Stock</th>
                     <th>Action</th>
                 </thead>
@@ -138,8 +138,8 @@
                             <td x-text="product.code"></td>
                             <td x-text="product.name"></td>
                             <td x-text="product.category.name"></td>
-                            <td x-text="product.price"></td>
-                            <td x-text="product.cost"></td>
+                            <td x-text="product.selling_price"></td>
+                            <td x-text="product.cost_price"></td>
                             <td x-text="product.stock"></td>
                             <td>
                                 <button @click.prevent="updateProductToggle(product.id)"
@@ -219,18 +219,18 @@
                     <div class="col-6">
                         <div class="mb-2">
                             <label for="cost" class="form-label"> Product Cost:</label>
-                            <input type="number" class="form-control" id="cost" x-model="datas.cost"
+                            <input type="number" class="form-control" id="cost" x-model="datas.cost_price"
                                 placeholder="Enter Product Cost">
-                            <template x-if="errors.cost">
+                            <template x-if="errors.cost_price">
                                 <span class="text-danger" x-text="errors.cost"></span>
                             </template>
                         </div>
 
                         <div class="mb-2">
                             <label for="price" class="form-label"> Product price:</label>
-                            <input type="number" class="form-control" id="price" x-model="datas.price"
+                            <input type="number" class="form-control" id="price" x-model="datas.selling_price"
                                 placeholder="Enter Product price">
-                            <template x-if="errors.price">
+                            <template x-if="errors.selling_price">
                                 <span class="text-danger" x-text="errors.price"></span>
                             </template>
                         </div>
