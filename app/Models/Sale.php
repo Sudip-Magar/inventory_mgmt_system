@@ -13,10 +13,12 @@ class Sale extends Model
         'sales_date',
         'expected_date',
         'status',
+        'notes',
         'payment_status',
         'payment_method',
         'total_received_amount',
         'total_due_amount',
+        'total_discount_amt',
 
     ];
 
@@ -24,7 +26,7 @@ class Sale extends Model
         return $this->belongsTo(Customer::class);
     }
 
-    public function salesItem(){
+    public function salesItems(){
         return $this->hasMany(SaleItems::class);
     }
     public function SalesRetuens(){

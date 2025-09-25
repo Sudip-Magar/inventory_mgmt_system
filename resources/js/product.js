@@ -4,9 +4,9 @@ document.addEventListener('alpine:init', () => {
         datas: {
             code: '',
             name: '',
-            price: '',
+            selling_price: '',
             description: '',
-            cost: '',
+            cost_price: '',
             stock: '',
             category_id: '',
         },
@@ -125,7 +125,7 @@ document.addEventListener('alpine:init', () => {
                 this.errors.name = "product name must not be more than 20 character long";
             }
 
-            if (!this.datas.price) {
+            if (!this.datas.selling_price) {
                 this.errors.price = "Product price is Required"
             }
 
@@ -139,7 +139,7 @@ document.addEventListener('alpine:init', () => {
                 this.errors.description = "product description must not be more than 50 character long";
             }
 
-            if (!this.datas.cost) {
+            if (!this.datas.cost_price) {
                 this.errors.cost = "Product cost is Required"
             }
 
