@@ -377,7 +377,6 @@ document.addEventListener('alpine:init', () => {
                 netAmount: this.items.map(p=>p.netAmount),
                 termAmount: this.items.map(p=>p.termAmount),
             }
-            console.log(payload)
             this.$wire.createPurchaseReturn(payload).then((response)=>{
             }).then((error)=>{
                 console.log(error)

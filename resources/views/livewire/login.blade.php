@@ -10,7 +10,7 @@
                      <input type="email" class="form-control" id="email" wire:model='email'
                          placeholder="Enter your email">
                      <small class="text-danger">
-                         @error('email')
+                         @error('email')    
                              {{ $message }}
                          @enderror
                      </small>

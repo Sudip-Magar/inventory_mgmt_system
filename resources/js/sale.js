@@ -14,6 +14,7 @@ document.addEventListener('alpine:init', () => {
         listView: true,
         updateView: false,
         saleInfo: {},
+        return_reason:'',
         data: {
             customer_id: '',
             sales_date: '',
@@ -135,8 +136,6 @@ document.addEventListener('alpine:init', () => {
                 vm.items[index].rate = product?.selling_price ?? 0;
             });
         },
-
-
 
         initSelect(el, index) {
             $(el).select2();
@@ -261,6 +260,7 @@ document.addEventListener('alpine:init', () => {
                 }
 
                 const product = this.allProduct.find(p => String(p.id) === String(item.product_id));
+                
                 if (!product) {
                     this.errors.quantity[idx] = 'Selected product not found';
                     return;
@@ -308,6 +308,7 @@ document.addEventListener('alpine:init', () => {
                     this.resetData();
                     this.getData();
                     this.timeoutFunc();
+                    this.listViewToggle();
                 })
                 .catch(() => this.message = 'Error saving Sale!');
         },
@@ -345,9 +346,73 @@ document.addEventListener('alpine:init', () => {
 
         },
 
-        confirmOrder(id){
-            
+        confirmOrder(id) {
+            this.$wire.confirmOrder(id).then((response) => {
+                if (response) {
+                    this.message = "Order Confirmed Successfully";
+                    this.timeoutFunc();
+                    this.getData();
+                    this.listViewToggle()
+                }
+                else {
+                    this.error = "Error Confirming Order";
+                    this.timeoutFunc();
+                }
+            }).catch((error) => {
+                error = "Error Confirming Order";
+                this.timeoutFunc();
+            })
         },
+
+        cancelOrder(id) {
+            this.$wire.cancelOrder(id).then((response) => {
+             this.message = "Order Cancelled Successfully";
+             this.timeoutFunc();
+             this.getData();
+             this.resetData();
+             this.listViewToggle();
+            }).catch((error) => {
+                this.error = error;
+                this.timeoutFunc();
+            });
+        },
+
+        saleReturn(id){
+            let payload = {
+                sale_id: id,
+                reason: this.return_reason,
+                total_amount: this.totalNetAmount,
+                total_quantity: this.totalQuantity,
+                totalTermAmount: this.totalTermAmount,
+                product_id: this.items.map(i => i.product_id),
+                quantity: this.items.map(i => i.quantity),
+                selling_price: this.items.map(i => i.rate),
+                netAmount: this.items.map(i => i.netAmount),
+                termAmount: this.items.map(i => i.termAmount),
+            };
+
+            this.$wire.createSaleReturn(payload).then().catch((error) => {
+                console.log(error)
+            });
+        },
+
+        resetToDraft(id){
+            this.$wire.resetToDraft(id).then((response) => {
+                if (response) {
+                    this.message = "Order Reset to Draft Successfully";
+                    this.timeoutFunc();
+                    this.getData();
+                    this.listViewToggle()
+                }
+                else {
+                    this.error = "Error Resetting Order to Draft";
+                    this.timeoutFunc();
+                } 
+            }).catch((error) => {
+                error = "Error Resetting Order to Draft";
+                this.timeoutFunc();
+            });
+        }
 
     }));
 });

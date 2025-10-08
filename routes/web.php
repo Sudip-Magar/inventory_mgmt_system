@@ -10,6 +10,7 @@ use App\Livewire\User\Product;
 use App\Livewire\User\Purchase;
 use App\Livewire\User\PurchaseReturn;
 use App\Livewire\User\Sale;
+use App\Livewire\User\SaleReturn;
 use App\Livewire\User\StockMovement;
 use App\Livewire\User\Vendor;
 use Illuminate\Support\Facades\Route;
@@ -33,5 +34,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/discount', Discount::class)->name('discount');
     Route::get('/movement', StockMovement::class)->name('movement');
     Route::get('/purchase-return', PurchaseReturn::class)->name('purchase-return');
-    Route::get('/sale', Sale::class)->name('sale-return');
+    Route::get('/sale', Sale::class)->name('sale');
+    Route::get('/sale-return', SaleReturn::class)->name('sale-return');
 });

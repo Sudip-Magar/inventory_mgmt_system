@@ -5,11 +5,14 @@ namespace App\Livewire\User;
 use App\Models\Customer;
 use App\Models\Discount;
 use App\Models\Product;
-use App\Models\PurchaseItems;
 use App\Models\SaleItems;
+use App\Models\SaleReturn;
+use App\Models\SaleReturnItem;
 use Livewire\Component;
 use App\Models\Sale as ModelSale;
 use Illuminate\Support\Facades\DB;
+use App\Models\StockMovement;
+
 
 class Sale extends Component
 {
@@ -93,6 +96,130 @@ class Sale extends Component
             }
             DB::commit();
             return true;
+        }
+        catch(\Exception $e){
+            DB::rollBack();
+            throw $e;
+        }
+    }
+
+    public function confirmOrder($id){
+        return DB::transaction((function () use ($id) {
+            $sale = ModelSale::lockForUpdate()->find($id);
+            if(!$sale || $sale->status == 'confirmed'){
+                return false;
+            }
+
+            $saleItems = SaleItems::where('sale_id',$id)
+            ->get(['product_id','quantity']);
+
+            if($saleItems->isEmpty()){
+                return false;
+            }
+
+            $quantityByProdut = $saleItems
+            ->groupBy('product_id')
+            ->map(Function($items){
+                return $items->sum('quantity');
+            });
+
+            foreach($quantityByProdut as $productId => $quantityToSub){
+                $currentStock = Product::where('id', $productId)->value('stock');
+                $newStock = max(0,(int)$currentStock - (int)$quantityToSub);
+                Product::where('id', $productId)->update(['stock' => $newStock]);
+            }
+            $sale->status = 'confirmed';
+            $sale->payment_status = 'paid';
+            foreach($saleItems as $item){
+                StockMovement::create([
+                    'product_id' => $item->product_id,
+                    'quantity' => $item->quantity,
+                    'type' => 'sale',
+                ]);
+            }
+
+            $sale->save();
+            return true;
+        }));
+    }
+
+    public function cancelOrder($id){
+        return DB::transaction(function () use ($id){
+            $sale = ModelSale::lockForUpdate()->find($id);
+            if(!$sale || $sale->status == 'cancelled'){
+                return false;
+            }
+            if($sale->status === 'draft'){
+                $sale->status = 'cancelled';
+                $sale->save();
+                return true;
+            }
+
+            $saleItems = SaleItems::where('sale_id',$id)
+            ->lockForUpdate()
+            ->get(['product_id','quantity']);
+
+            if($saleItems->isEmpty()){
+                throw new \Exception('No Sale Items Found');
+            }
+
+            $quantityByProdut = $saleItems
+            ->groupBy('product_id')
+            ->map(Function($items){
+                return $items->sum('quantity');
+            });
+
+            foreach($quantityByProdut as $productId => $quantityToAdd){
+                Product::where('id', $productId)->increment('stock', $quantityToAdd);
+            }
+
+            $sale->status = 'cancelled';
+            foreach($saleItems as $item){
+                StockMovement::create([
+                    'product_id' => $item->product_id,
+                    'quantity' => $item->quantity,
+                    'type' => 'sale_cancel',
+                ]);
+            }
+            $sale->save();
+        });
+    }
+
+    public function resetToDraft($id){
+        $sale = ModelSale::find($id);
+        if($sale){
+            $sale->status = 'draft';
+            $sale->save();
+            return true;
+        }
+        return false;
+    }
+
+    public function createSaleReturn($payload){
+        DB::beginTransaction();
+        try{
+            $saleReturn = SaleReturn::create([
+                'sale_id' => $payload['sale_id'],
+                'return_reason' => $payload['reason'],
+                'total_amount' => $payload['total_amount'],
+                'total_quantity' => $payload['total_quantity'],
+                'total_discount_amt'=>$payload['totalTermAmount'],
+                'status'=>'draft',
+                'payment_method'=>'unpaid',
+            ]);
+
+             foreach ($payload['product_id'] as $i => $productId){
+                    SaleReturnItem::create([
+                        'sale_return_id' => $saleReturn->id,
+                        'product_id' => $productId,
+                        'quantity' => $payload['quantity'][$i],
+                        'cost_price' => $payload['selling_price'][$i],
+                        'subTotal' => $payload['netAmount'][$i],
+                        'disount_amt' => $payload['termAmount'][$i],
+                    ]);
+                }   
+            DB::commit();
+            return $this->redirectRoute('sale-return');
         }
         catch(\Exception $e){
             DB::rollBack();

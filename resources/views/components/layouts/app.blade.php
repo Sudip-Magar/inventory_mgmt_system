@@ -64,6 +64,12 @@
                     </a>
                 </li>
 
+                  <li class="sidebar-item">
+                    <a href="{{ url('sale-return') }}" class="sidebar-links">
+                        <i class="fa-solid fa-dollar-sign"></i>
+                        <span>Sales Return</span>
+                    </a>
+                </li>
                 <li class="sidebar-item">
                     <a href="{{ url('customer') }}" class="sidebar-links">
                         <i class="fa-solid fa-users"></i>

@@ -386,11 +386,11 @@
                         <template x-if="saleInfo.status == 'draft'">
                             <div>
                                 <button @click.prevent="updateSaleData(saleInfo.id)" class="btn btn-warning">Update
-                                    Purchase</button>
+                                    Sale</button>
                                 <button @click.prevent="confirmOrder(saleInfo.id)" class="btn btn-success">Confirm
                                     Order</button>
                                 <button class="btn btn-danger" @click.prevent="cancelOrder(saleInfo.id)">Cancel
-                                    Purchase</button>
+                                    Sale</button>
                             </div>
                         </template>
 
@@ -398,11 +398,11 @@
                             <div>
                                 <button type="button" class="btn btn-warning" data-bs-toggle="modal"
                                     data-bs-target="#exampleModal">
-                                    Purchase Return
+                                    Sale Return
                                 </button>
 
                                 <button class="btn btn-danger text-white"
-                                    @click.prevent="cancelOrder(saleInfo.id)">Cancel Purchase</button>
+                                    @click.prevent="cancelOrder(saleInfo.id)">Cancel Sale</button>
                             </div>
                         </template>
 
@@ -452,6 +452,28 @@
         <div class="flex justify-end gap-2">
             <button class="btn btn-secondary" @click.prevent="closeTermModal">Cancel</button>
             <button class="btn btn-primary" @click.prevent="saveTermAmount">Save</button>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger" id="exampleModalLabel">Do you really wnat to create Sale Return!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <strong class="mb-1 d-inline-block">Please reason to return the product:</strong>
+                    <textarea min="2" class="form-control" name="" id="" x-model="return_reason"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" @click.prevent="saleReturn(saleInfo.id)"
+                        class="btn btn-primary">Create Sale Return</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
