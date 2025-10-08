@@ -20,10 +20,10 @@ class SaleReturn extends Model
     ];
 
     public function sale(){
-        return $this->belongsTo(Purchase::class);
+        return $this->belongsTo(Sale::class);
     }
 
-    public function SaleReturnItems(){
+    public function saleReturnItems(){
         return $this->hasMany(SaleReturnItem::class);
     }
 }

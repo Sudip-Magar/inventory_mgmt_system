@@ -260,6 +260,7 @@ document.addEventListener('alpine:init', () => {
                 }
 
                 const product = this.allProduct.find(p => String(p.id) === String(item.product_id));
+                
                 if (!product) {
                     this.errors.quantity[idx] = 'Selected product not found';
                     return;
