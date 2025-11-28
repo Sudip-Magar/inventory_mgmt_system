@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('discounts', function (Blueprint $table) {
             $table->id();
-            $table->string('code');                  // e.g. DISC10
+            $table->integer('code');                  // e.g. DISC10
             $table->string('name');                  // human readable
             $table->enum('sign', ['+', '-']);        // discount/increase
             $table->decimal('rate', 8, 2);           // percentage or flat amount
